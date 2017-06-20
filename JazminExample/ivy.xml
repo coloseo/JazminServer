@@ -1,12 +1,16 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ivy-module version="1.1">
 	<info 	organisation="jazmin.example" 
-			module="JazminExample" 
-			status="integration"
-			revision="1.0.0" />
-	
+		module="JazminExample" 
+		status="integration"
+		revision="1.0.0" />
+	<publications>
+		<artifact type="pom" ext="pom" conf="default" />
+		<artifact type="jar" ext="jar" conf="default" />
+	</publications>
+
 	<dependencies>
-		<dependency org="jazmin" name="jazmin" rev="1.0"/>
+		<dependency org="org.github" name="jazmin" rev="1.0.0"/>
 	</dependencies>
-	
+
 </ivy-module>

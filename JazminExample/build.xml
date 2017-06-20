@@ -137,7 +137,7 @@
 	<!-- init ivy -->
 	<!-- =================================================================== -->    
 	<target name="init-lib">
-		<ivy:configure url="${ivy.config.path}"/>
+		<ivy:configure file="${ivy.config.path}"/>
 	</target>
 	<!-- =================================================================== -->
     <!-- clean ivy lib cache -->
@@ -151,6 +151,6 @@
     <!-- =================================================================== -->
 	<target name="get-lib"  depends="init-lib"
 		description="下载或从本地缓存获取第三方包">
-	    <ivy:retrieve pattern="${lib.dir}/[artifact].[ext]" />
+	    <ivy:retrieve pattern="${lib.dir}/[artifact](-[classifier]).[ext]" />
     </target>
 </project>
