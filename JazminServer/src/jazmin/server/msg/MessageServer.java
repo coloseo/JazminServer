@@ -205,9 +205,7 @@ public class MessageServer extends Server{
 	public int getWebSocketPort() {
 		return webSocketPort;
 	}
-	/**
-	 * @param webSocketPort the webSocketPort to set
-	 */
+
 	public void setUdpPort(int udpPort) {
 		if(isInited()){
 			throw new IllegalArgumentException("set before inited");

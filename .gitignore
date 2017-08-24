@@ -3,3 +3,5 @@ JazminExample/build/
 JazminExample/lib/
 JazminExample/release/
 .DS_Store
+.idea/
+*.iml
