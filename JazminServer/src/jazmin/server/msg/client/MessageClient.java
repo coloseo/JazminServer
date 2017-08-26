@@ -108,7 +108,7 @@ public class MessageClient {
 		channel.writeAndFlush(msg);
 	}
 	//
-	static class RPCLock{
+	public static class RPCLock{
 		public int id;
 		public long startTime;
 		public ResponseMessage response;

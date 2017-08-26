@@ -33,12 +33,12 @@ public class Channel {
 	Map<String,Session>sessions;
 	long createTime;
 	Object userObject;
-	MessageServer messageServer;
+	SessionManager sessionManager;
 	boolean autoRemoveDisconnectedSession;
 	//
-	Channel(MessageServer messageServer,String id) {
+	Channel(SessionManager sessionManager,String id) {
 		this.id=id;
-		this.messageServer=messageServer;
+		this.sessionManager=sessionManager;
 		this.sessions=new ConcurrentHashMap<>();
 		createTime=System.currentTimeMillis();
 		autoRemoveDisconnectedSession=false;
@@ -111,7 +111,7 @@ public class Channel {
 	 */
 	public List<Session> destroy(){
 		List<Session>result=removeAllSessions();
-		messageServer.removeChannelInternal(id);
+		this.sessionManager.removeChannelInternal(id);
 		return result;
 	}
 	/**

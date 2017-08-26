@@ -63,7 +63,7 @@ import jazmin.server.msg.codec.ResponseMessage;
  * @author yama
  * 25 Dec, 2014
  */
-public class MessageServer extends Server{
+public class MessageServer extends Server {
 	private static Logger logger=LoggerFactory.get(MessageServer.class);
 	//
 	static final int DEFAULT_PORT=3001;
@@ -99,7 +99,6 @@ public class MessageServer extends Server{
 	Map<Integer,Session>sessionMap;
 	Map<String,Session>principalMap;
 	AtomicInteger sessionId;
-	Map<String, Channel>channelMap;
 	SessionLifecycleListener sessionLifecycleListener;
 	Method sessionCreatedMethod;
 	Method sessionDisconnectedMethod;
@@ -108,13 +107,15 @@ public class MessageServer extends Server{
 	WebSocketServerHandler webSocketServerHandler;
 	TcpServerHandler tcpServerHandler;
 	KcpUdpHandler kcpUdpHandler;
+
+	SessionManager sessionManager;
+
 	//
 	public MessageServer() {
 		super();
 		serviceMap=new ConcurrentHashMap<String, ServiceStub>();
 		sessionMap=new ConcurrentHashMap<>();
 		principalMap=new ConcurrentHashMap<>();
-		channelMap=new ConcurrentHashMap<>();
 		sessionId=new AtomicInteger(1);
 		networkTrafficStat=new NetworkTrafficStat();
 		codecFactory=new DefaultCodecFactory();
@@ -135,6 +136,7 @@ public class MessageServer extends Server{
 		udpPort=-1;
 		//
 		checkRequestId=true;
+		sessionManager = new SessionManager();
 	}
 	//
 	
@@ -330,7 +332,7 @@ public class MessageServer extends Server{
 	 * @return all channels
 	 */
 	public List<Channel>getChannels(){
-		return new ArrayList<Channel>(channelMap.values());
+		return new ArrayList<Channel>(this.sessionManager.getChannelMap().values());
 	}
 	/**
 	 * return all inbound byte count
@@ -879,22 +881,7 @@ public class MessageServer extends Server{
 	 * @return the channel with specified id
 	 */
 	public Channel createChannel(String id){
-		if(logger.isDebugEnabled()){
-			logger.debug("create channel:"+id);
-		}
-		if(id==null){
-			throw new IllegalArgumentException("id can not be null.");
-		}
-		Channel channel=channelMap.get(id);
-		if(channel!=null){
-			return channel;
-		}
-		if(channelMap.size()>maxChannelCount){
-			throw new IllegalStateException("too many channel,max:"+maxChannelCount);
-		}
-		channel=new Channel(this,id);
-		channelMap.put(id, channel);
-		return channel;
+	    return this.sessionManager.createChannel(id);
 	}
 	/**
 	 * get channel by id
@@ -902,23 +889,20 @@ public class MessageServer extends Server{
 	 * @return channel with specified id
 	 */
 	public Channel getChannel(String id){
-		return channelMap.get(id);
+		return this.sessionManager.getChannel(id);
 	}
 	/**
 	 * return total channel count 
 	 * @return total channel count
 	 */
 	public int getChannelCount(){
-		return channelMap.size();
+	    return this.sessionManager.getChannelCount();
 	}
 	/**
 	 * 
 	 */
-	void removeChannelInternal(String id){
-		if(logger.isDebugEnabled()){
-			logger.debug("remove channel:"+id);
-		}
-		channelMap.remove(id);
+	public void removeChannelInternal(String id){
+	    this.sessionManager.removeChannelInternal(id);
 	}
 	//--------------------------------------------------------------------------
 	//lifecycle

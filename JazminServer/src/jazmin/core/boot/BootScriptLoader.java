@@ -111,6 +111,7 @@ public class BootScriptLoader {
 				"importPackage(Packages.jazmin.server.file);"+
 				"importPackage(Packages.jazmin.server.jmx);"+
 				"importPackage(Packages.jazmin.server.msg);"+
+				"importPackage(Packages.jazmin.server.protobuf);"+
 				"importPackage(Packages.jazmin.server.im);"+
 				"importPackage(Packages.jazmin.server.rtmp);"+
 				"importPackage(Packages.jazmin.server.sip);"+

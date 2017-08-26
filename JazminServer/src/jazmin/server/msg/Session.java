@@ -20,6 +20,7 @@ import jazmin.log.LoggerFactory;
 import jazmin.misc.RateLimiter;
 import jazmin.server.msg.codec.RequestMessage;
 import jazmin.server.msg.codec.ResponseMessage;
+import jazmin.server.protobuf.ProtobufMessage;
 
 /**
  * @author yama
@@ -47,7 +48,7 @@ public class Session {
 	RateLimiter rateLimiter;
 	private AtomicBoolean processSyncServiceState;
 	//
-	Session(NetworkChannel channel) {
+	public Session(NetworkChannel channel) {
 		setChannel(channel);
 		lastAccess();
 		sentMessageCount=0;
@@ -242,11 +243,11 @@ public class Session {
 	}
 	/*
 	 */
-	void setId(int id) {
+	public void setId(int id) {
 		this.id = id;
 	}
 	//
-	void processSyncService(boolean isProcess){
+	public void processSyncService(boolean isProcess){
 		processSyncServiceState.set(isProcess);
 	}
 	//
@@ -315,6 +316,14 @@ public class Session {
 				responseMessage.responseObject=ResponseMessage.emptyHashMap;
 			}
 			channel.writeAndFlush(responseMessage);
+		}
+	}
+
+	public void sendProtobufMessage(ProtobufMessage message) {
+		lastAccess();
+		if(channel!=null){
+			sentMessageCount++;
+			channel.writeAndFlush(message);
 		}
 	}
 	//
