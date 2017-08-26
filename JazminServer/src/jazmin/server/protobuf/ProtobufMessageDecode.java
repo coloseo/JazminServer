@@ -27,6 +27,10 @@ public class ProtobufMessageDecode extends ByteToMessageDecoder {
     @Override
     protected void decode(ChannelHandlerContext channelHandlerContext, ByteBuf byteBuf, List<Object> list) throws Exception {
         try {
+            if (byteBuf.readableBytes() < 4) {
+                return;
+            }
+            byteBuf.markReaderIndex();
             int id = byteBuf.readInt();
             int length = byteBuf.readInt();
             byte[] data = byteBuf.readBytes(length).array();
