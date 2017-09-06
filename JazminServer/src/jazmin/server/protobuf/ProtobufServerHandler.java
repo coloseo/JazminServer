@@ -1,5 +1,6 @@
 package jazmin.server.protobuf;
 
+import io.netty.channel.ChannelHandler;
 import io.netty.channel.ChannelHandlerAdapter;
 import io.netty.channel.ChannelHandlerContext;
 import io.netty.handler.timeout.IdleStateEvent;
@@ -15,7 +16,7 @@ import java.io.IOException;
  * Created by ging on 24/08/2017.
  * JazminServer
  */
-
+@ChannelHandler.Sharable
 class ProtobufServerHandler extends ChannelHandlerAdapter {
 
     private static Logger logger = LoggerFactory.getLogger(ProtobufServerHandler.class);
