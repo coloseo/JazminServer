@@ -256,7 +256,7 @@ public class ProtobufServer extends Server {
             if(e != null) {
                 logger.error("invoke service error: %s", e);
             }
-            context.close(e!=null);
+            //context.close(e!=null);
         }
     }
 
